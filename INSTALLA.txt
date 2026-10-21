@@ -1,0 +1,20 @@
+MONTAGE - installazione su macOS
+=================================
+
+1. Copia i file cosi':
+   - Montage.vst3       ->  ~/Library/Audio/Plug-Ins/VST3/
+   - Montage.component  ->  ~/Library/Audio/Plug-Ins/Components/
+
+   (In Finder: menu Vai > Vai alla cartella... e incolla il percorso.)
+
+2. Il plugin non e' firmato con un Apple Developer ID, quindi macOS
+   potrebbe bloccarlo. Apri il Terminale e incolla:
+
+   xattr -cr ~/Library/Audio/Plug-Ins/VST3/Montage.vst3
+   xattr -cr ~/Library/Audio/Plug-Ins/Components/Montage.component
+
+3. Apri Ableton Live > Impostazioni > Plug-ins e premi "Rescan"
+   (se serve, attiva "Use Audio Units" e "Use VST3 Plug-In System Folders").
+
+4. Crea una traccia MIDI, carica Montage dalla sezione Plug-ins,
+   trascina un sample nella finestra e suona con la tastiera MIDI.

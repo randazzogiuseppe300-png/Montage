@@ -1,0 +1,38 @@
+name: Build Montage (macOS)
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release -j 4
+
+      - name: Package DMG
+        run: |
+          mkdir -p dist/Montage
+          VST3=$(find build -name "Montage.vst3" -type d | head -n 1)
+          AU=$(find build -name "Montage.component" -type d | head -n 1)
+          echo "VST3: $VST3"
+          echo "AU: $AU"
+          cp -R "$VST3" dist/Montage/
+          cp -R "$AU" dist/Montage/
+          codesign --force --deep -s - dist/Montage/Montage.vst3
+          codesign --force --deep -s - dist/Montage/Montage.component
+          cp INSTALLA.txt dist/Montage/INSTALLA.txt
+          hdiutil create -volname "Montage" -srcfolder dist/Montage -ov -format UDZO Montage.dmg
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Montage-macOS-DMG
+          path: Montage.dmg

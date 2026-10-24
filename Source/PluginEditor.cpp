@@ -376,7 +376,6 @@ MontageEditor::MontageEditor (MontageProcessor& p)
     : juce::AudioProcessorEditor (&p), proc (p), waveView (p)
 {
     setLookAndFeel (&laf);
-    setSize (980, 640);
 
     addAndMakeVisible (waveView);
 
@@ -437,6 +436,8 @@ MontageEditor::MontageEditor (MontageProcessor& p)
     addAndMakeVisible (loadButton);
     addAndMakeVisible (mutateButton);
     addAndMakeVisible (variationButton);
+
+    setSize (980, 640);
 }
 
 MontageEditor::~MontageEditor()
@@ -556,6 +557,9 @@ void MontageEditor::paint (juce::Graphics& g)
 
 void MontageEditor::resized()
 {
+    if (knobs.size() < 17)
+        return;
+
     // Controlli in alto a destra
     prevButton.setBounds (640, 16, 30, 26);
     presetBox.setBounds (674, 16, 222, 26);
